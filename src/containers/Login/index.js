@@ -61,8 +61,8 @@ class AuthorSignIn extends Component {
     }
   }
 
-  handleSubmit(author) {
-    this.props.signIn({ author });
+  handleSubmit(user) {
+    this.props.signIn(user.email,  user.password );
   }
 
   renderErrorMessage() {

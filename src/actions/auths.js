@@ -1,20 +1,58 @@
 import { axios } from '../shared/utilities';
-import { AUTH, SIGN_OUT } from '../shared/constants/actions';
+import { AUTH, SIGN_OUT, PROFILE } from '../shared/constants/actions';
 import { AUTHOR_PATH } from '../shared/constants/apis';
 import { browserHistory } from 'react-router';
+import auth0 from 'auth0-js';
+import store from '../store';
 
-function authSuccess(accessToken) {
+//configure auth0
+const webAuth = new auth0.WebAuth({
+  clientID: '-eI45UDyBea29VC9MZfygwpevM2fJje4',
+  domain: 'anbercin.eu.auth0.com',
+  responseType: 'token id_token',
+
+});
+
+webAuth.parseHash(window.location.hash, (err, authResult) => {
+  console.log('in parse hash');
+      if(authResult) console.log('in auth result:'+ JSON.stringify(authResult));
+  if (err) store.dispatch(authFailure(err.description));
+  if (authResult && authResult.accessToken && authResult.idToken) {
+    store.dispatch(authSuccess(authResult.accessToken, authResult.idToken));
+
+    webAuth.client.userInfo(authResult.accessToken, (error, profile) => {
+              console.log('in profile :'+ JSON.stringify(profile));
+      if (error) {
+        console.log('Error loading the Profile', error)
+      } else {
+        console.log('in profile :'+ JSON.stringify(profile));
+        store.dispatch(profileSuccess(profile));
+        //browserHistory.replace('/home')
+      }
+    })
+  }
+
+});
+
+function authSuccess(accessToken, idToken) {
+  console.log('auth success');
   localStorage.setItem('accessToken', accessToken);
+  localStorage.setItem('id_token', idToken);
   return { type: AUTH.SUCCESS };
 }
 
-function authFailure({ errorMessage }) {
+function authFailure(errorMessage) {
+  console.log('auth FAILURE: '+errorMessage);
   return {
     type: AUTH.FAILURE,
     payload: { errorMessage },
   };
 }
-
+function profileSuccess(profile) {
+  console.log('profile success');
+  localStorage.setItem('profile', JSON.stringify(profile));
+  return { type: PROFILE.SUCCESS };
+}
 
 export function signUp(params) {
   const request = axios.post(`${AUTHOR_PATH}/sign-up`, params);
@@ -27,8 +65,18 @@ export function signUp(params) {
   };
 }
 
-export function signIn(params) {
-  console.log('in sign in params: '+params.email);
+export function signIn(email, password) {
+  console.log('in sign in params: '+email);
+  return dispatch => {
+    webAuth.redirect.loginWithCredentials({
+        connection: 'Username-Password-Authentication',
+        email,
+        password,
+      }, err => {
+        if (err) dispatch(authFailure(err.description));
+      });
+  };
+  /*
   //const request = axios.post(`${AUTHOR_PATH}/sign-in`, params);
   const request = axios.get('http://rim.mkk.com.tr:5000/students');
 
@@ -40,10 +88,13 @@ export function signIn(params) {
         .catch(error => dispatch(authFailure(error.data)))
     );
   };
+  */
 }
 
 function signOutSuccess() {
   localStorage.removeItem('accessToken');
+  localStorage.removeItem('id_token');
+  localStorage.removeItem('profile');
   return {
     type: SIGN_OUT.SUCCESS,
   };
@@ -57,13 +108,19 @@ function signOutFailure({ errorMessage }) {
 }
 
 export function signOut() {
+  return dispatch => {
+    dispatch(signOutSuccess());
+    browserHistory.push('/login');
+  };
+  /*
   const request = axios.delete(`${AUTHOR_PATH}/sign-out`);
   return dispatch => {
     return (
       request
         .then(() => dispatch(signOutSuccess()))
-        .then(() => browserHistory.push('/cms/sign-in'))
+        .then(() => browserHistory.push('/login'))
         .catch(error => dispatch(signOutFailure(error.data)))
     );
   };
+  */
 }

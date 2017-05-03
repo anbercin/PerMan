@@ -41,6 +41,7 @@ export const TOGGLE_PROJECT = createRequestTypes('TOGGLE_PROJECT');
 
 export const SIGN_OUT = createRequestTypes('SIGN_OUT');
 export const AUTH = createRequestTypes('AUTH');
+export const PROFILE = createRequestTypes('PROFILE');
 
 export const RESET_POST = 'RESET_POST';
 export const CREATE_ITEM = 'CREATE_ITEM';
