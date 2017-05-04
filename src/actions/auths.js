@@ -1,35 +1,33 @@
+import { browserHistory } from 'react-router';
+import auth0 from 'auth0-js';
 import { axios } from '../shared/utilities';
 import { AUTH, SIGN_OUT, PROFILE } from '../shared/constants/actions';
 import { AUTHOR_PATH } from '../shared/constants/apis';
-import { browserHistory } from 'react-router';
-import auth0 from 'auth0-js';
 import store from '../store';
 
 //configure auth0
 const webAuth = new auth0.WebAuth({
-  clientID: '-eI45UDyBea29VC9MZfygwpevM2fJje4',
+  clientID: 'ICz2gh633mo05wuaONGZuS3L2byNvPkw',
   domain: 'anbercin.eu.auth0.com',
   responseType: 'token id_token',
 
 });
 
 webAuth.parseHash(window.location.hash, (err, authResult) => {
-  console.log('in parse hash');
-      if(authResult) console.log('in auth result:'+ JSON.stringify(authResult));
+
   if (err) store.dispatch(authFailure(err.description));
   if (authResult && authResult.accessToken && authResult.idToken) {
     store.dispatch(authSuccess(authResult.accessToken, authResult.idToken));
 
     webAuth.client.userInfo(authResult.accessToken, (error, profile) => {
-              console.log('in profile :'+ JSON.stringify(profile));
+      console.log('in profile :' + JSON.stringify(profile));
       if (error) {
-        console.log('Error loading the Profile', error)
+        console.log('Error loading the Profile', error);
+
       } else {
-        console.log('in profile :'+ JSON.stringify(profile));
         store.dispatch(profileSuccess(profile));
-        //browserHistory.replace('/home')
       }
-    })
+    });
   }
 
 });
@@ -39,19 +37,24 @@ function authSuccess(accessToken, idToken) {
   localStorage.setItem('accessToken', accessToken);
   localStorage.setItem('id_token', idToken);
   return { type: AUTH.SUCCESS };
+
 }
 
 function authFailure(errorMessage) {
-  console.log('auth FAILURE: '+errorMessage);
+  console.log('auth FAILURE: ' + errorMessage);
   return {
     type: AUTH.FAILURE,
     payload: { errorMessage },
   };
 }
+
 function profileSuccess(profile) {
   console.log('profile success');
   localStorage.setItem('profile', JSON.stringify(profile));
-  return { type: PROFILE.SUCCESS };
+  return {
+    type: PROFILE.SUCCESS,
+    payload: { profile },
+  };
 }
 
 export function signUp(params) {
@@ -66,7 +69,6 @@ export function signUp(params) {
 }
 
 export function signIn(email, password) {
-  console.log('in sign in params: '+email);
   return dispatch => {
     webAuth.redirect.loginWithCredentials({
         connection: 'Username-Password-Authentication',

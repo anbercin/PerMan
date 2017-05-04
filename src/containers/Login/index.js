@@ -43,7 +43,7 @@ function validate(values) {
   return errors;
 }
 
-class AuthorSignIn extends Component {
+class Login extends Component {
 
   static contextTypes = {
     router: PropTypes.object
@@ -75,7 +75,7 @@ class AuthorSignIn extends Component {
     const { handleSubmit, submitting, fields: { email, password } }  = this.props;
     return(
       <form onSubmit={handleSubmit(this.handleSubmit)} className={styles.root}>
-        <h2 className={styles.heading}>Sign In</h2>
+        <h2 className={styles.heading}>Login</h2>
         <TextField
           {...email}
           type="email"
@@ -97,14 +97,14 @@ class AuthorSignIn extends Component {
                 disabled={submitting}
                 className={styles.button}
         >
-          SignIn
+          Login
         </button>
       </form>)
   }
 };
 
 
-AuthorSignIn.propTypes = propTypes;
+Login.propTypes = propTypes;
 
 export default reduxForm({
   form: 'SignIn',
@@ -112,4 +112,4 @@ export default reduxForm({
   validate
 }, mapStateToProps, {
   signIn
-})(AuthorSignIn);
+})(Login);

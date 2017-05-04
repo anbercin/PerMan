@@ -10,10 +10,10 @@ import store from './store';
 
 //const store = createStore(rootReducer, applyMiddleware(thunk));
 
-const accessToken = localStorage.getItem('accessToken');
-if (accessToken) {
-  store.dispatch({ type: AUTH.SUCCESS });
-}
+//const accessToken = localStorage.getItem('accessToken');
+//if (accessToken) {
+//  store.dispatch({ type: AUTH.SUCCESS });
+//}
 
 ReactDOM.render(
     <Provider store={store}>

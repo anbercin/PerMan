@@ -2,7 +2,7 @@ import {
   CREATE_ERROR,
   DELETE_ERROR,
   SIGN_OUT,
-} from '../constants/actions';
+}  from '../shared/constants/actions';
 
 export function createError(error) {
   if (error.status && error.status === 401) {
@@ -10,6 +10,7 @@ export function createError(error) {
       type: SIGN_OUT.SUCCESS,
     };
   }
+
   const message = error.data ? error.data.errorMessage : error;
 
   return {

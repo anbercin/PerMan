@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { deleteError } from '../../actions/errors';
+import { deleteError } from '../../../actions/errors';
 import styles from './styles';
-
 
 export default function (ComposedComponent) {
   function mapStateToProps(state) {
@@ -47,6 +46,7 @@ export default function (ComposedComponent) {
           </div>
         );
       }
+
       return <ComposedComponent {...this.props} />;
     }
   }

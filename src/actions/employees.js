@@ -7,16 +7,13 @@ import {
 } from '../shared/constants/actions';
 import { POST_PATH } from '../shared/constants/apis';
 import { fetchItems } from './items';
-
-
-import { createError } from '../shared/actions/errors';
+import { createError } from './errors';
 import { createAuthorizedRequest, trimPost } from '../shared/utilities';
 import { browserHistory } from 'react-router';
 import axios from 'axios';
 
 function fetchPostsSuccess(response) {
-    console.log(response.length)
-    console.log('in fetch paost success');
+
   return {
     type: FETCH_POSTS.SUCCESS,
     payload: {
@@ -30,7 +27,6 @@ function fetchPostsSuccess(response) {
 
 export function fetchPosts(page = 1) {
 
- console.log('in fetchPosts');
   const request = axios.get('http://rim.mkk.com.tr:5000/students');
   return dispatch => {
     return (
@@ -75,7 +71,6 @@ export function fetchNewPost() {
   };
 }
 
-
 function fetchEditPostSuccess(response) {
   return {
     type: FETCH_EDIT_POST.SUCCESS,
@@ -102,7 +97,6 @@ export function fetchEditPost(id) {
       .catch(error => dispatch(createError(error)));
   };
 }
-
 
 export function savePostRequest() {
   return {
@@ -141,7 +135,6 @@ export function savePost(props) {
     );
   };
 }
-
 
 function togglePostSuccess(sortRank, response) {
   return {
