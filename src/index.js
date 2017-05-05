@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import useScroll from 'react-router-scroll';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import { AUTH } from './shared/constants/actions';
 
 import routes from './routes';
 import store from './store';
+
+injectTapEventPlugin();
 
 //const store = createStore(rootReducer, applyMiddleware(thunk));
 

@@ -18,6 +18,7 @@ function checkTokenExpiry() {
 }
 
 function getProfile() {
+    console.log('get profile:'+ localStorage.getItem('profile'));
   return JSON.parse(localStorage.getItem('profile'));
 }
 
