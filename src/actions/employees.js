@@ -27,7 +27,8 @@ function fetchPostsSuccess(response) {
 
 export function fetchPosts(page = 1) {
 
-  const request = axios.get('http://rim.mkk.com.tr:5000/students');
+  //const request = axios.get('http://rim.mkk.com.tr:5000/students');
+  const request = createAuthorizedRequest('get', `${POST_PATH}`);
   return dispatch => {
     return (
       request

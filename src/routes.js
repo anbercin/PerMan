@@ -13,7 +13,7 @@ import SignUp from './containers/SignUp/index';
 
 export default (
   <Route path="/" component={App}>
-      <IndexRoute component={ProgressBar(EmployeeListContainer)} />
+      <IndexRoute component={ProgressBar(Alert(EmployeeListContainer))} />
       <Route path="/personnel" component={ProgressBar(Alert(Authentication(EmployeeListContainer)))} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={SignUp} />

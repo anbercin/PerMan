@@ -1,18 +1,19 @@
 import client from "axios";
-import { CMS_ROOT_URL } from './constants/apis';
+import { ROOT_URL } from './constants/apis';
 
 
 export const axios = client.create({
-  baseURL: CMS_ROOT_URL,
+  baseURL: ROOT_URL,
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
-    'X-CSRF-Token': getCSRFToken()
-  }
+    'X-CSRF-Token': getCSRFToken(),
+  },
 });
 
 export function createAuthorizedRequest(method, path, params) {
-  const config = { headers: { 'Authorization': localStorage.getItem('accessToken') } };
+  const token = localStorage.getItem('id_token') || null;
+  const config = { headers: { 'Authorization': `Bearer ${token}` } };
   switch(method) {
     case 'get':
       return axios.get(path, config);
@@ -24,7 +25,6 @@ export function createAuthorizedRequest(method, path, params) {
       return axios.delete(path, config);
   }
 }
-
 
 export function trimPost(params) {
   return {
