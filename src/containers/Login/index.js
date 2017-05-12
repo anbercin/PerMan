@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import ErrorMessage from '../../shared/components/ErrorMessage/index';
@@ -75,6 +76,7 @@ class Login extends Component {
     const { handleSubmit, submitting, fields: { email, password } }  = this.props;
     return(
       <form onSubmit={handleSubmit(this.handleSubmit)} className={styles.root}>
+        <Helmet title="Login" />
         <h2 className={styles.heading}>Login</h2>
         <TextField
           {...email}
