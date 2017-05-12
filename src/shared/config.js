@@ -4,5 +4,5 @@ export default {
   siteDescription: 'Personal Manager ' +
   'This website is written in React/Redux with CSS Modules as the front-end,' +
   'and  it uses Material UI. ',
-  siteName: 'rim.mkk.com.tr',
+  siteName: 'PerMan',
 };

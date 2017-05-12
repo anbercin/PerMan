@@ -13,24 +13,26 @@ const webAuth = new auth0.WebAuth({
 
 });
 
-webAuth.parseHash(window.location.hash, (err, authResult) => {
+export function parseHash() {
+  webAuth.parseHash(window.location.hash, (err, authResult) => {
 
-  if (err) store.dispatch(authFailure(err.description));
-  if (authResult && authResult.accessToken && authResult.idToken) {
-    store.dispatch(authSuccess(authResult.accessToken, authResult.idToken));
+    if (err) store.dispatch(authFailure(err.description));
+    if (authResult && authResult.accessToken && authResult.idToken) {
+      store.dispatch(authSuccess(authResult.accessToken, authResult.idToken));
 
-    webAuth.client.userInfo(authResult.accessToken, (error, profile) => {
-      console.log('in profile :' + JSON.stringify(profile));
-      if (error) {
-        console.log('Error loading the Profile', error);
+      webAuth.client.userInfo(authResult.accessToken, (error, profile) => {
+        console.log('in profile :' + JSON.stringify(profile));
+        if (error) {
+          console.log('Error loading the Profile', error);
 
-      } else {
-        store.dispatch(profileSuccess(profile));
-      }
-    });
-  }
+        } else {
+          store.dispatch(profileSuccess(profile));
+        }
+      });
+    }
 
-});
+  });
+}
 
 function authSuccess(accessToken, idToken) {
   console.log('auth success');

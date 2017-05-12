@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { fetchPosts, fetchPersonByName, togglePost } from '../../actions/employees';
 import { Link } from 'react-router';
@@ -88,7 +89,11 @@ class EmployeeListContainer extends Component {
 
   render() {
     if (this.state.loading) {
-      return <section />;
+      return (
+        <section>
+          <Helmet title="Personel" />
+        </section>
+      );
     }
 
     const newButton = (
@@ -104,6 +109,7 @@ class EmployeeListContainer extends Component {
       return (
         <section>
           {newButton}
+          <Helmet title="Personel" />  
           <NoContent pageName="posts" />
         </section>
       );
@@ -113,6 +119,7 @@ class EmployeeListContainer extends Component {
 
       <section>
        {newButton}
+       <Helmet title="Personel" />
        <SearchBar  onSearch={this.props.fetchPersonByName}/>
         <h1 className={styles.title}>Personel</h1>
         <Table fixedHeader fixedFooter>

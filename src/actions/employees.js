@@ -10,7 +10,6 @@ import { fetchItems } from './items';
 import { createError } from './errors';
 import { createAuthorizedRequest, trimPost } from '../shared/utilities';
 import { browserHistory } from 'react-router';
-import axios from 'axios';
 
 function fetchPostsSuccess(response) {
 
@@ -41,7 +40,7 @@ export function fetchPosts(page = 1) {
 
 export function fetchPersonByName(name) {
   console.log('in fetchPersonByName');
-  const request = axios.get('http://rim.mkk.com.tr:5000/students?name=' + name);
+  const request = createAuthorizedRequest('get', `${POST_PATH}?name=${name}`);
   return dispatch => {
     return (
       request
